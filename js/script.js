@@ -53,16 +53,16 @@ const noMsg = `Ciao ${CONFIG.recipientName}, purtroppo non potrò esserci.😭`;
 yesLink.href = `https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(yesMsg)}`;
 noLink.href = `https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(noMsg)}`;
 
-// function disableRSVP() {
-//     document.querySelectorAll(".answers a").forEach(l => {
-//         l.style.pointerEvents = "none";
-//         l.style.opacity = "0.5";
-//     });
-// }
+function disableRSVP() {
+    document.querySelectorAll(".answers a").forEach(l => {
+        l.style.pointerEvents = "none";
+        l.style.opacity = "0.5";
+    });
+}
 
-// if (localStorage.getItem("rsvpAnswer")) {
-//     disableRSVP();
-// }
+if (localStorage.getItem("rsvpAnswer")) {
+    disableRSVP();
+}
 
 yesLink.addEventListener("click", () => {
     localStorage.setItem("rsvpAnswer", "yes");
