@@ -2,6 +2,8 @@
 Reset
  */
 
+
+
 * {
     margin: 0;
     padding: 0;
@@ -43,18 +45,19 @@ body {
 
 .door {
     flex: 1;
-    background: #fdfdfd;
-    background-image: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%);
     box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.1);
     transition: transform 1.5s ease-in-out;
+    background-color: rgb(252, 242, 233);
 }
 
 .door.left {
-    border-right: 1px solid #ccc;
+    border-right: 1px solid;
+    background-color: rgb(252, 242, 233);
 }
 
 .door.right {
-    border-left: 1px solid #ccc;
+    border-left: 1px solid;
+    background-color: rgb(252, 242, 233);
 }
 
 
@@ -111,10 +114,10 @@ body {
 }
 
 h1 {
-    font-family: "Allura", cursive;
-    font-size: 48px;
-    margin: 0;
-    color: #9fa630;
+    font-family: 'allura', cursive;
+    font-size: 64px;
+    margin: 50px 0 5px;
+    color: #3d5a40;
 }
 
 .subtitle {
@@ -134,7 +137,7 @@ h1 {
     margin: 20px 0 10px;
     font-family: "Playfair Display", serif;
     font-weight: 600;
-    font-size: 14px;
+    font-size: 24px;
     color: #000;
 }
 
@@ -151,14 +154,22 @@ h1 {
 }
 
 .date-block .month {
-    font-size: 12px;
+    font-size: 18px;
     margin-top: 4px;
+}
+
+.year {
+    font-size: 30px;
+    margin-left: -30px;
+    margin-top: -8px;
+
 }
 
 .time {
     font-size: 14px;
     font-weight: 600;
-    margin-bottom: 15px;
+    margin-top: 25px;
+    margin-bottom: 5px;
 }
 
 /* Countdown */
@@ -219,9 +230,10 @@ h1 {
 /* RSVP */
 .ask {
     font-family: "Allura", cursive;
-    font-size: 24px;
-    margin: 15px 0 8px;
+    font-size: 34px;
+    margin: 24px 0 8px;
     color: #3d5a40;
+    gap: 45px;
 }
 
 .answers {
