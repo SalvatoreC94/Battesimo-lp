@@ -20,7 +20,11 @@
         }
 
         body {
-            background: url("bg-batteimo.JPG") no-repeat center center/cover;
+            background-color: rgb(252, 242, 233);
+            background-image: url("bg-battesimo_transparent.png");
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: cover;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -82,9 +86,9 @@
 
         /* --- Invito --- */
         .overlay {
-            background: rgba(255, 255, 255, 0.55);
-            backdrop-filter: blur(6px);
-            -webkit-backdrop-filter: blur(6px);
+            background: rgba(255, 255, 255, 0.555);
+            backdrop-filter: blur(3px);
+            -webkit-backdrop-filter: blur(3px);
             padding: 20px 15px;
             border-radius: 16px;
             width: 95%;
@@ -227,7 +231,8 @@
             margin-top: 20px;
         }
 
-        button {
+        #addToCal {
+            display: inline-block;
             background: transparent;
             border: 1px solid #3d5a40;
             color: #3d5a40;
@@ -236,9 +241,10 @@
             font-size: 13px;
             font-weight: 500;
             cursor: pointer;
+            text-decoration: none;
         }
 
-        button:hover {
+        #addToCal:hover {
             background: #3d5a40;
             color: #fff;
         }
@@ -296,7 +302,7 @@
                 font-size: 26px;
             }
 
-            button {
+            #addToCal {
                 font-size: 14px;
                 padding: 10px 20px;
             }
@@ -353,7 +359,7 @@
         </div>
 
         <div class="buttons">
-            <button id="addToCal">Calendario</button>
+            <a id="addToCal" target="_blank">Aggiungi a Google Calendar</a>
         </div>
     </div>
 
@@ -365,7 +371,7 @@
     <script>
         const CONFIG = {
             dateISO: "2025-10-11T19:00:00+02:00",
-            whatsappNumber: "+39xxxxxxxxxx",
+            whatsappNumber: "393517526552", // <-- Inserisci qui numero corretto
             recipientName: "Alessia",
             church: { lat: 40.7436, lng: 14.5693 },
             reception: { lat: 40.7499, lng: 14.6123 }
@@ -389,16 +395,17 @@
             const audio = document.getElementById("bgAudio");
             if (audio.muted) { audio.muted = false; audio.play(); }
         }, { once: true });
+
         // Stop musica quando si lascia la pagina
         window.addEventListener("beforeunload", () => {
             const audio = document.getElementById("bgAudio");
             if (!audio.paused) {
                 audio.pause();
-                audio.currentTime = 0; // resetta a inizio
+                audio.currentTime = 0;
             }
         });
 
-        // Opzionale: stop anche quando la scheda non è visibile
+        // Stop anche quando la scheda non è visibile
         document.addEventListener("visibilitychange", () => {
             const audio = document.getElementById("bgAudio");
             if (document.hidden && !audio.paused) {
@@ -407,25 +414,62 @@
             }
         });
 
+        // RSVP con memoria locale
+        const yesLink = document.getElementById("yesLink");
+        const noLink = document.getElementById("noLink");
 
-        // RSVP
         const yesMsg = `Ciao ${CONFIG.recipientName}, ti confermo la mia presenza al Battesimo di Giulia. Non vediamo l’ora di esserci!`;
         const noMsg = `Ciao ${CONFIG.recipientName}, purtroppo non potrò esserci al Battesimo di Giulia.`;
-        document.getElementById("yesLink").href = `https://wa.me/${CONFIG.whatsappNumber.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(yesMsg)}`;
-        document.getElementById("noLink").href = `https://wa.me/${CONFIG.whatsappNumber.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(noMsg)}`;
+
+        yesLink.href = `https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(yesMsg)}`;
+        noLink.href = `https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(noMsg)}`;
+
+        function disableRSVP() {
+            document.querySelectorAll(".answers a").forEach(l => {
+                l.style.pointerEvents = "none";
+                l.style.opacity = "0.5";
+            });
+        }
+
+        if (localStorage.getItem("rsvpAnswer")) {
+            disableRSVP();
+        }
+
+        yesLink.addEventListener("click", () => {
+            localStorage.setItem("rsvpAnswer", "yes");
+            disableRSVP();
+        });
+
+        noLink.addEventListener("click", () => {
+            localStorage.setItem("rsvpAnswer", "no");
+            disableRSVP();
+        });
 
         // Maps
         document.getElementById("chiesa").href = `https://www.google.com/maps/dir/?api=1&destination=${CONFIG.church.lat},${CONFIG.church.lng}`;
         document.getElementById("ristorante").href = `https://www.google.com/maps/dir/?api=1&destination=${CONFIG.reception.lat},${CONFIG.reception.lng}`;
 
-        // Calendar
-        document.getElementById("addToCal").onclick = () => {
-            const start = new Date(CONFIG.dateISO), end = new Date(start.getTime() + 3 * 60 * 60000);
-            function icsDate(d) { return d.toISOString().replace(/[-:]/g, "").split(".")[0]; }
-            const ics = `BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nDTSTART:${icsDate(start)}\nDTEND:${icsDate(end)}\nSUMMARY:Battesimo di Giulia\nEND:VEVENT\nEND:VCALENDAR`;
-            const blob = new Blob([ics], { type: "text/calendar" }), a = document.createElement("a");
-            a.href = URL.createObjectURL(blob); a.download = "battesimo.ics"; a.click();
-        };
+        // Funzione per date locali
+        function formatDateLocal(d) {
+            const pad = n => (n < 10 ? '0' + n : n);
+            return (
+                d.getFullYear().toString() +
+                pad(d.getMonth() + 1) +
+                pad(d.getDate()) + 'T' +
+                pad(d.getHours()) +
+                pad(d.getMinutes()) +
+                pad(d.getSeconds())
+            );
+        }
+
+        // Google Calendar link (inizio alle 19:00)
+        const start = new Date(CONFIG.dateISO);
+        const end = new Date(start.getTime() + 4 * 60 * 60000);
+        document.getElementById("addToCal").href =
+            `https://www.google.com/calendar/render?action=TEMPLATE&text=Battesimo di Giulia` +
+            `&dates=${formatDateLocal(start)}/${formatDateLocal(end)}` +
+            `&details=Festeggeremo insieme il Battesimo di Giulia` +
+            `&location=Nuova Chiesa di Costantinopoli, Angri`;
 
         // Porte
         document.getElementById("seal").onclick = () => {
