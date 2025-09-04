@@ -32,7 +32,6 @@
             inset: 0;
             display: flex;
             z-index: 1000;
-            overflow: hidden;
         }
 
         .door {
@@ -51,24 +50,21 @@
             border-left: 1px solid #ccc;
         }
 
-        #coverText {
+        /* Timbro ceralacca */
+        #seal {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            color: #3d5a40;
-            font-family: "Allura", cursive;
-            font-size: 42px;
-            background: rgba(255, 255, 255, 0.9);
-            padding: 12px 28px;
-            border-radius: 12px;
+            width: 100px;
+            height: auto;
             cursor: pointer;
             z-index: 1100;
             transition: transform 0.3s;
         }
 
-        #coverText:hover {
-            transform: translate(-50%, -50%) scale(1.05);
+        #seal:hover {
+            transform: translate(-50%, -50%) scale(1.1);
         }
 
         .open .left {
@@ -79,76 +75,113 @@
             transform: translateX(100%);
         }
 
-        .open #coverText {
+        .open #seal {
             opacity: 0;
             pointer-events: none;
         }
 
         /* --- Invito --- */
         .overlay {
-            background: rgba(255, 255, 255, 0.75);
-            padding: 40px 30px;
-            border-radius: 20px;
-            max-width: 700px;
-            width: 90%;
+            background: rgba(255, 255, 255, 0.55);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            padding: 20px 15px;
+            border-radius: 16px;
+            width: 95%;
+            max-width: 600px;
             text-align: center;
             z-index: 1;
         }
 
         h1 {
             font-family: "Allura", cursive;
-            font-size: 72px;
+            font-size: 48px;
             margin: 0;
             color: #3d5a40;
         }
 
         .subtitle {
             font-family: "Playfair Display", serif;
-            font-size: 18px;
+            font-size: 16px;
             margin: 10px 0 20px;
             color: #444;
         }
 
-        .date {
-            font-size: 20px;
+        /* Data stile Canva */
+        .date-block {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+            justify-items: center;
+            gap: 10px;
+            margin: 20px 0 10px;
+            font-family: "Playfair Display", serif;
             font-weight: 600;
-            margin-bottom: 6px;
+            font-size: 14px;
+            color: #000;
         }
 
-        .countdown {
+        .date-block .center {
+            border-left: 1px solid #888;
+            border-right: 1px solid #888;
+            padding: 0 12px;
+            text-align: center;
+        }
+
+        .date-block .day {
+            font-size: 42px;
+            line-height: 1;
+        }
+
+        .date-block .month {
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+        .time {
             font-size: 14px;
-            letter-spacing: .1em;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        /* Countdown */
+        .countdown {
+            font-size: 13px;
             margin-bottom: 20px;
             color: #555;
         }
 
+        /* Locations */
         .locations {
             display: flex;
             justify-content: center;
-            gap: 60px;
+            gap: 30px;
             margin: 20px 0 25px;
+            flex-wrap: wrap;
         }
 
         .location {
+            flex: 1 1 120px;
+            max-width: 160px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            max-width: 200px;
+            text-align: center;
         }
 
         .location a.icon {
             display: flex;
             justify-content: center;
             align-items: center;
-            width: 70px;
-            height: 70px;
+            width: 60px;
+            height: 60px;
             border: 2px solid #3d5a40;
             border-radius: 50%;
-            font-size: 32px;
+            font-size: 26px;
             color: #3d5a40;
             text-decoration: none;
-            transition: all .2s;
             background: #fff;
+            margin-bottom: 8px;
         }
 
         .location a.icon:hover {
@@ -158,21 +191,21 @@
         }
 
         .location .label {
-            margin-top: 8px;
             font-weight: 600;
-            font-size: 15px;
+            font-size: 14px;
             color: #2f2f2f;
         }
 
         .location .address {
-            font-size: 13px;
+            font-size: 12px;
             color: #555;
         }
 
+        /* RSVP */
         .ask {
             font-family: "Allura", cursive;
-            font-size: 28px;
-            margin-bottom: 10px;
+            font-size: 24px;
+            margin: 15px 0 8px;
             color: #3d5a40;
         }
 
@@ -180,38 +213,29 @@
             display: flex;
             justify-content: center;
             gap: 40px;
-            font-size: 28px;
+            font-size: 22px;
             font-weight: 600;
         }
 
         .answers a {
             text-decoration: none;
             color: #3d5a40;
-            transition: color .2s;
         }
 
-        .answers a:hover {
-            color: #000;
-        }
-
+        /* Bottoni */
         .buttons {
-            margin-top: 25px;
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            flex-wrap: wrap;
+            margin-top: 20px;
         }
 
         button {
             background: transparent;
             border: 1px solid #3d5a40;
             color: #3d5a40;
-            padding: 10px 18px;
+            padding: 8px 16px;
             border-radius: 30px;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 500;
             cursor: pointer;
-            transition: all .3s;
         }
 
         button:hover {
@@ -219,66 +243,91 @@
             color: #fff;
         }
 
-        .date-block {
-            display: grid;
-            grid-template-columns: 1fr auto 1fr;
-            align-items: center;
-            justify-items: center;
-            gap: 20px;
-            margin: 20px 0 10px;
-            font-family: "Playfair Display", serif;
-            font-weight: 600;
-            font-size: 18px;
-            letter-spacing: .05em;
-            color: #000;
-        }
+        /* --- Desktop --- */
+        @media(min-width:768px) {
+            h1 {
+                font-size: 72px;
+            }
 
-        .date-block .center {
-            border-left: 1px solid #888;
-            border-right: 1px solid #888;
-            padding: 0 20px;
-            text-align: center;
-        }
+            .subtitle {
+                font-size: 20px;
+            }
 
-        .date-block .day {
-            font-size: 60px;
-            line-height: 1;
-        }
+            .date-block {
+                gap: 20px;
+                font-size: 18px;
+            }
 
-        .date-block .month {
-            font-size: 16px;
-            margin-top: 4px;
-        }
+            .date-block .day {
+                font-size: 64px;
+            }
 
-        .time {
-            font-family: "Inter", sans-serif;
-            font-weight: 600;
-            margin-bottom: 20px;
-            font-size: 16px;
-            letter-spacing: .08em;
+            .date-block .month {
+                font-size: 16px;
+            }
+
+            .time {
+                font-size: 18px;
+            }
+
+            .countdown {
+                font-size: 16px;
+            }
+
+            .location a.icon {
+                width: 70px;
+                height: 70px;
+                font-size: 32px;
+            }
+
+            .location .label {
+                font-size: 16px;
+            }
+
+            .location .address {
+                font-size: 14px;
+            }
+
+            .ask {
+                font-size: 28px;
+            }
+
+            .answers {
+                font-size: 26px;
+            }
+
+            button {
+                font-size: 14px;
+                padding: 10px 20px;
+            }
+
+            #seal {
+                width: 150px;
+            }
         }
     </style>
 </head>
 
 <body>
-    <!-- Copertina "porte" -->
+    <!-- Copertina con porte -->
     <div id="cover">
         <div class="door left"></div>
         <div class="door right"></div>
-        <div id="coverText">Apri il biglietto ✨</div>
+        <img id="seal" src="timbro-ceralacca.png" alt="Timbro ceralacca">
     </div>
 
     <!-- Invito -->
     <div class="overlay">
         <h1>Giulia</h1>
         <div class="subtitle">È lieta di invitarvi al suo Battesimo</div>
+
         <div class="date-block">
-            <div class="col">SABATO</div>
-            <div class="col center">
+            <div>SABATO</div>
+            <div class="center">
                 <div class="day">11</div>
                 <div class="month">OTTOBRE</div>
             </div>
-            <div class="col">2025</div>
+            <div>2025</div>
         </div>
         <div class="time">ORE 19:00</div>
 
@@ -287,13 +336,13 @@
         <div class="locations">
             <div class="location">
                 <a id="chiesa" class="icon" href="#" target="_blank">⛪</a>
-                <div class="label">Chiesa</div>
-                <div class="address">Via Esempio 123 – Città</div>
+                <div class="label">Nuova Chiesa di Costantinopoli</div>
+                <div class="address">Via Dei Goti 32 – Angri</div>
             </div>
             <div class="location">
                 <a id="ristorante" class="icon" href="#" target="_blank">🥂</a>
                 <div class="label">Il Bagatto Club</div>
-                <div class="address">Via Evento 45 – Città</div>
+                <div class="address">Via Termine Bianco 4 – Pagani</div>
             </div>
         </div>
 
@@ -308,7 +357,7 @@
         </div>
     </div>
 
-    <!-- Audio -->
+    <!-- Audio autoplay -->
     <audio id="bgAudio" autoplay loop muted playsinline>
         <source src="ordinary.mp3" type="audio/mpeg">
     </audio>
@@ -316,10 +365,10 @@
     <script>
         const CONFIG = {
             dateISO: "2025-10-11T19:00:00+02:00",
-            whatsappNumber: "+393511495299",
+            whatsappNumber: "+39xxxxxxxxxx",
             recipientName: "Alessia",
-            church: { lat: 41.9028, lng: 12.4964 },
-            reception: { lat: 41.8902, lng: 12.4922 }
+            church: { lat: 40.7436, lng: 14.5693 },
+            reception: { lat: 40.7499, lng: 14.6123 }
         };
 
         // Countdown
@@ -335,15 +384,33 @@
         }
         setInterval(tick, 1000); tick();
 
-        // Sblocco audio al primo tap
+        // Audio unlock
         document.body.addEventListener("click", () => {
             const audio = document.getElementById("bgAudio");
             if (audio.muted) { audio.muted = false; audio.play(); }
         }, { once: true });
+        // Stop musica quando si lascia la pagina
+        window.addEventListener("beforeunload", () => {
+            const audio = document.getElementById("bgAudio");
+            if (!audio.paused) {
+                audio.pause();
+                audio.currentTime = 0; // resetta a inizio
+            }
+        });
 
-        // RSVP links
-        const yesMsg = `Ciao ${CONFIG.recipientName}, Certo che ci sarò ❤️🥂 `;
-        const noMsg = `Ciao ${CONFIG.recipientName}, No, purtroppo non potrò esserci 😭 `;
+        // Opzionale: stop anche quando la scheda non è visibile
+        document.addEventListener("visibilitychange", () => {
+            const audio = document.getElementById("bgAudio");
+            if (document.hidden && !audio.paused) {
+                audio.pause();
+                audio.currentTime = 0;
+            }
+        });
+
+
+        // RSVP
+        const yesMsg = `Ciao ${CONFIG.recipientName}, ti confermo la mia presenza al Battesimo di Giulia. Non vediamo l’ora di esserci!`;
+        const noMsg = `Ciao ${CONFIG.recipientName}, purtroppo non potrò esserci al Battesimo di Giulia.`;
         document.getElementById("yesLink").href = `https://wa.me/${CONFIG.whatsappNumber.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(yesMsg)}`;
         document.getElementById("noLink").href = `https://wa.me/${CONFIG.whatsappNumber.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(noMsg)}`;
 
@@ -360,8 +427,8 @@
             a.href = URL.createObjectURL(blob); a.download = "battesimo.ics"; a.click();
         };
 
-        // Attiva animazione porte
-        document.getElementById("coverText").onclick = () => {
+        // Porte
+        document.getElementById("seal").onclick = () => {
             document.getElementById("cover").classList.add("open");
             setTimeout(() => { document.getElementById("cover").style.display = "none"; }, 1500);
         };
