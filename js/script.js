@@ -7,17 +7,17 @@ const CONFIG = {
 };
 
 // Countdown
-const countdownEl = document.getElementById("countdown");
-function tick() {
-    const eTs = new Date(CONFIG.dateISO).getTime(), now = Date.now();
-    let diff = eTs - now;
-    if (diff <= 0) { countdownEl.textContent = "Oggi è il grande giorno!"; return; }
-    const d = Math.floor(diff / 86400000); diff -= d * 86400000;
-    const h = Math.floor(diff / 3600000); diff -= h * 3600000;
-    const m = Math.floor(diff / 60000);
-    countdownEl.textContent = `Mancano ${d}g ${h}h ${m}m`;
-}
-setInterval(tick, 1000); tick();
+// const countdownEl = document.getElementById("countdown");
+// function tick() {
+//     const eTs = new Date(CONFIG.dateISO).getTime(), now = Date.now();
+//     let diff = eTs - now;
+//     if (diff <= 0) { countdownEl.textContent = "Oggi è il grande giorno!"; return; }
+//     const d = Math.floor(diff / 86400000); diff -= d * 86400000;
+//     const h = Math.floor(diff / 3600000); diff -= h * 3600000;
+//     const m = Math.floor(diff / 60000);
+//     countdownEl.textContent = `Mancano ${d}g ${h}h ${m}m`;
+// }
+// setInterval(tick, 1000); tick();
 
 // Audio unlock
 document.body.addEventListener("click", () => {
