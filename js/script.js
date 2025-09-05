@@ -6,19 +6,6 @@ const CONFIG = {
     church: { lat: 40.7338691, lng: 14.5722424 }
 };
 
-// Countdown
-// const countdownEl = document.getElementById("countdown");
-// function tick() {
-//     const eTs = new Date(CONFIG.dateISO).getTime(), now = Date.now();
-//     let diff = eTs - now;
-//     if (diff <= 0) { countdownEl.textContent = "Oggi è il grande giorno!"; return; }
-//     const d = Math.floor(diff / 86400000); diff -= d * 86400000;
-//     const h = Math.floor(diff / 3600000); diff -= h * 3600000;
-//     const m = Math.floor(diff / 60000);
-//     countdownEl.textContent = `Mancano ${d}g ${h}h ${m}m`;
-// }
-// setInterval(tick, 1000); tick();
-
 // Audio unlock
 document.body.addEventListener("click", () => {
     const audio = document.getElementById("bgAudio");
@@ -91,17 +78,27 @@ function formatDateLocal(d) {
     );
 }
 
-// Google Calendar link (inizio alle 19:00)
+// Calendario adattabile (Android → Google Calendar, iOS/Desktop → ICS)
 const start = new Date(CONFIG.dateISO);
-const end = new Date(start.getTime() + 4 * 60 * 60000);
-document.getElementById("addToCal").href =
-    `https://www.google.com/calendar/render?action=TEMPLATE&text=Battesimo di Giulia` +
-    `&dates=${formatDateLocal(start)}/${formatDateLocal(end)}` +
-    `&details=Festeggeremo insieme il Battesimo di Giulia` +
-    `&location=Nuova Chiesa di Costantinopoli, Angri`;
+const end = new Date(start.getTime() + 4 * 60 * 60000); // durata evento 4h
+const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+const addToCal = document.getElementById("addToCal");
 
-// Porte
-document.getElementById("seal").onclick = () => {
-    document.getElementById("cover").classList.add("open");
-    setTimeout(() => { document.getElementById("cover").style.display = "none"; }, 1500);
-};
+if (/android/i.test(userAgent)) {
+    // Android → Google Calendar
+    addToCal.href =
+        `https://www.google.com/calendar/render?action=TEMPLATE&text=Battesimo di Giulia` +
+        `&dates=${formatDateLocal(start)}/${formatDateLocal(end)}` +
+        `&details=Festeggeremo insieme il Battesimo di Giulia` +
+        `&location=Nuova Chiesa di Costantinopoli, Angri`;
+} else {
+    // iOS + Desktop → ICS
+    addToCal.href = "battesimo.ics"; 
+}
+
+
+    // Porte
+    document.getElementById("seal").onclick = () => {
+        document.getElementById("cover").classList.add("open");
+        setTimeout(() => { document.getElementById("cover").style.display = "none"; }, 1500);
+    };
