@@ -2,8 +2,8 @@ const CONFIG = {
     dateISO: "2025-10-11T19:00:00+02:00",
     whatsappNumber: "393511495299",
     recipientName: "Alessia",
-    church: { lat: 40.7436, lng: 14.5693 },
-    reception: { lat: 40.7499, lng: 14.6123 }
+    reception: { lat: 40.7714452, lng: 14.5963169 },
+    church: { lat: 40.7338691, lng: 14.5722424 }
 };
 
 // Countdown
@@ -48,7 +48,7 @@ const yesLink = document.getElementById("yesLink");
 const noLink = document.getElementById("noLink");
 
 const yesMsg = `Ciao ${CONFIG.recipientName}, certo che ci sarò!❤️🥂`;
-const noMsg = `Ciao ${CONFIG.recipientName}, purtroppo non potrò esserci.😭`;
+const noMsg = `Ciao ${CONFIG.recipientName}, purtroppo non potrò esserci😭`;
 
 yesLink.href = `https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(yesMsg)}`;
 noLink.href = `https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(noMsg)}`;

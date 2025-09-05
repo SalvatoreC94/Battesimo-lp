@@ -210,11 +210,6 @@ h1 {
     margin-bottom: 8px;
 }
 
-.location a.icon:hover {
-    background: #3d5a40;
-    color: #fff;
-    transform: scale(1.1);
-}
 
 .location .label {
     font-weight: 600;
