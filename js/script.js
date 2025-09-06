@@ -31,11 +31,24 @@ document.addEventListener("visibilitychange", () => {
 });
 
 // RSVP con memoria locale
-const yesMsg = `Ciao ${CONFIG.recipientName}, certo che ci sarò! %E2%9D%A4%EF%B8%8F%F0%9F%A5%82`;
-const noMsg = `Ciao ${CONFIG.recipientName}, purtroppo non potrò esserci %F0%9F%98%AD`;
+const yesLink = document.getElementById("yesLink");
+const noLink = document.getElementById("noLink");
 
-yesLink.href = `https://wa.me/${CONFIG.whatsappNumber}?text=${yesMsg}`;
-noLink.href = `https://wa.me/${CONFIG.whatsappNumber}?text=${noMsg}`;
+const yesMsg = `Ciao ${CONFIG.recipientName}, certo che ci sarò! ❤️🥂`;
+const noMsg = `Ciao ${CONFIG.recipientName}, purtroppo non potrò esserci 😭`;
+
+// Normalizza il numero (niente +, spazi ecc.)
+const phone = CONFIG.whatsappNumber.replace(/\D/g, "");
+
+// Su Android meglio api.whatsapp.com, altrove wa.me
+const isAndroid = /android/i.test(navigator.userAgent);
+const baseUrl = isAndroid
+    ? "https://api.whatsapp.com/send?phone="
+    : "https://wa.me/";
+
+yesLink.href = `${baseUrl}${phone}&text=${encodeURIComponent(yesMsg)}`;
+noLink.href = `${baseUrl}${phone}&text=${encodeURIComponent(noMsg)}`;
+
 
 function disableRSVP() {
     document.querySelectorAll(".answers a").forEach(l => {
