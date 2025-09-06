@@ -6,10 +6,13 @@ const CONFIG = {
     church: { lat: 40.7338691, lng: 14.5722424 }
 };
 
-// Audio unlock
+// --- AUDIO ---
 document.body.addEventListener("click", () => {
     const audio = document.getElementById("bgAudio");
-    if (audio.muted) { audio.muted = false; audio.play(); }
+    if (audio.muted) {
+        audio.muted = false;
+        audio.play();
+    }
 }, { once: true });
 
 // Stop musica quando si lascia la pagina
@@ -30,26 +33,22 @@ document.addEventListener("visibilitychange", () => {
     }
 });
 
-// RSVP con memoria locale
+// --- RSVP (WhatsApp + memoria locale) ---
 const yesLink = document.getElementById("yesLink");
 const noLink = document.getElementById("noLink");
 
 const yesMsg = `Ciao ${CONFIG.recipientName}, certo che ci sarò! ❤️🥂`;
 const noMsg = `Ciao ${CONFIG.recipientName}, purtroppo non potrò esserci 😭`;
 
-// Normalizza il numero (niente +, spazi ecc.)
+// Normalizza il numero (solo cifre)
 const phone = CONFIG.whatsappNumber.replace(/\D/g, "");
 
-// Su Android meglio api.whatsapp.com, altrove wa.me
-const isAndroid = /android/i.test(navigator.userAgent);
-const baseUrl = isAndroid
-    ? "https://api.whatsapp.com/send?phone="
-    : "https://wa.me/";
+// Usa api.whatsapp.com per compatibilità iOS/Android
+const WA_BASE = "https://api.whatsapp.com/send?phone=";
+yesLink.href = `${WA_BASE}${phone}&text=${encodeURIComponent(yesMsg)}`;
+noLink.href = `${WA_BASE}${phone}&text=${encodeURIComponent(noMsg)}`;
 
-yesLink.href = `${baseUrl}${phone}&text=${encodeURIComponent(yesMsg)}`;
-noLink.href = `${baseUrl}${phone}&text=${encodeURIComponent(noMsg)}`;
-
-
+// Funzione per bloccare dopo risposta
 function disableRSVP() {
     document.querySelectorAll(".answers a").forEach(l => {
         l.style.pointerEvents = "none";
@@ -57,25 +56,33 @@ function disableRSVP() {
     });
 }
 
+// Se già risposto, disabilita
 if (localStorage.getItem("rsvpAnswer")) {
     disableRSVP();
 }
 
+// Memorizza risposta
 yesLink.addEventListener("click", () => {
-    localStorage.setItem("rsvpAnswer", "yes");
-    disableRSVP();
+    setTimeout(() => {
+        localStorage.setItem("rsvpAnswer", "yes");
+        disableRSVP();
+    }, 800);
 });
 
 noLink.addEventListener("click", () => {
-    localStorage.setItem("rsvpAnswer", "no");
-    disableRSVP();
+    setTimeout(() => {
+        localStorage.setItem("rsvpAnswer", "no");
+        disableRSVP();
+    }, 800);
 });
 
-// Maps
-document.getElementById("chiesa").href = `https://www.google.com/maps/dir/?api=1&destination=${CONFIG.church.lat},${CONFIG.church.lng}`;
-document.getElementById("ristorante").href = `https://www.google.com/maps/dir/?api=1&destination=${CONFIG.reception.lat},${CONFIG.reception.lng}`;
+// --- MAPS ---
+document.getElementById("chiesa").href =
+    `https://www.google.com/maps/dir/?api=1&destination=${CONFIG.church.lat},${CONFIG.church.lng}`;
+document.getElementById("ristorante").href =
+    `https://www.google.com/maps/dir/?api=1&destination=${CONFIG.reception.lat},${CONFIG.reception.lng}`;
 
-// Funzione per date locali
+// --- CALENDARIO ---
 function formatDateLocal(d) {
     const pad = n => (n < 10 ? '0' + n : n);
     return (
@@ -88,7 +95,6 @@ function formatDateLocal(d) {
     );
 }
 
-// Calendario adattabile (Android → Google Calendar, iOS/Desktop → ICS)
 const start = new Date(CONFIG.dateISO);
 const end = new Date(start.getTime() + 4 * 60 * 60000); // durata evento 4h
 const userAgent = navigator.userAgent || navigator.vendor || window.opera;
@@ -106,9 +112,10 @@ if (/android/i.test(userAgent)) {
     addToCal.href = "battesimo.ics";
 }
 
-
-// Porte
+// --- PORTE ---
 document.getElementById("seal").onclick = () => {
     document.getElementById("cover").classList.add("open");
-    setTimeout(() => { document.getElementById("cover").style.display = "none"; }, 1500);
+    setTimeout(() => {
+        document.getElementById("cover").style.display = "none";
+    }, 1500);
 };
