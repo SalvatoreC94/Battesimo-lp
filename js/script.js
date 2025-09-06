@@ -31,14 +31,11 @@ document.addEventListener("visibilitychange", () => {
 });
 
 // RSVP con memoria locale
-const yesLink = document.getElementById("yesLink");
-const noLink = document.getElementById("noLink");
+const yesMsg = `Ciao ${CONFIG.recipientName}, certo che ci sarò! %E2%9D%A4%EF%B8%8F%F0%9F%A5%82`;
+const noMsg = `Ciao ${CONFIG.recipientName}, purtroppo non potrò esserci %F0%9F%98%AD`;
 
-const yesMsg = `Ciao ${CONFIG.recipientName}, certo che ci sarò!❤️🥂`;
-const noMsg = `Ciao ${CONFIG.recipientName}, purtroppo non potrò esserci😭`;
-
-yesLink.href = `https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(yesMsg)}`;
-noLink.href = `https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(noMsg)}`;
+yesLink.href = `https://wa.me/${CONFIG.whatsappNumber}?text=${yesMsg}`;
+noLink.href = `https://wa.me/${CONFIG.whatsappNumber}?text=${noMsg}`;
 
 function disableRSVP() {
     document.querySelectorAll(".answers a").forEach(l => {
@@ -93,12 +90,12 @@ if (/android/i.test(userAgent)) {
         `&location=Nuova Chiesa di Costantinopoli, Angri`;
 } else {
     // iOS + Desktop → ICS
-    addToCal.href = "battesimo.ics"; 
+    addToCal.href = "battesimo.ics";
 }
 
 
-    // Porte
-    document.getElementById("seal").onclick = () => {
-        document.getElementById("cover").classList.add("open");
-        setTimeout(() => { document.getElementById("cover").style.display = "none"; }, 1500);
-    };
+// Porte
+document.getElementById("seal").onclick = () => {
+    document.getElementById("cover").classList.add("open");
+    setTimeout(() => { document.getElementById("cover").style.display = "none"; }, 1500);
+};
