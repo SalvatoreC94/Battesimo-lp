@@ -1,8 +1,15 @@
-/* 
-Reset
+/*
+Reset & CSS Variables
  */
 
-
+:root {
+    --primary-green: #3d5a40;
+    --bg-cream: rgb(252, 242, 233);
+    --accent-gold: rgb(128, 128, 0);
+    --text-dark: #2f2f2f;
+    --text-gray: #555;
+    --border-gray: #888;
+}
 
 * {
     margin: 0;
@@ -20,12 +27,12 @@ html {
     padding: 0;
     height: 100%;
     width: 100%;
-    font-family: "Inter", sans-serif, ;
+    font-family: "Inter", sans-serif;
     overflow: hidden;
 }
 
 body {
-    background-color: rgb(252, 242, 233);
+    background-color: var(--bg-cream);
     background-image: url("../bg-battesimo_transparent.png");
     background-repeat: no-repeat;
     background-position: center;
@@ -33,6 +40,25 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+/* Focus Styles for Accessibility */
+a:focus,
+button:focus,
+img[role="button"]:focus {
+    outline: 3px solid var(--primary-green);
+    outline-offset: 2px;
+}
+
+a:focus:not(:focus-visible),
+button:focus:not(:focus-visible) {
+    outline: none;
+}
+
+a:focus-visible,
+button:focus-visible {
+    outline: 3px solid var(--primary-green);
+    outline-offset: 2px;
 }
 
 /* --- Copertina "porte" --- */
@@ -335,5 +361,63 @@ h1.Giulia {
     font-size: 64px;
     /* regola la dimensione a piacere */
     margin: 0;
-    color: rgb(128, 128, 0)
+    color: var(--accent-gold);
+}
+
+/* Audio Toggle Button */
+.audio-toggle {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: var(--primary-green);
+    border: 2px solid white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+    transition: transform 0.2s, background 0.3s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.audio-toggle:hover {
+    transform: scale(1.1);
+    background: #2d4530;
+}
+
+.audio-icon {
+    font-size: 24px;
+}
+
+/* RSVP Feedback */
+.rsvp-feedback {
+    margin-top: 15px;
+    min-height: 24px;
+    font-size: 14px;
+    color: var(--primary-green);
+    font-weight: 600;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.rsvp-feedback.show {
+    opacity: 1;
+}
+
+@media(min-width:768px) {
+    .audio-toggle {
+        width: 60px;
+        height: 60px;
+    }
+
+    .audio-icon {
+        font-size: 28px;
+    }
+
+    .rsvp-feedback {
+        font-size: 16px;
+    }
 }
