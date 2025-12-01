@@ -7,13 +7,49 @@ const CONFIG = {
 };
 
 // --- AUDIO ---
+const audio = document.getElementById("bgAudio");
+const audioToggle = document.getElementById("audioToggle");
+const audioIcon = audioToggle.querySelector(".audio-icon");
+
+// Unmute audio al primo click
 document.body.addEventListener("click", () => {
-    const audio = document.getElementById("bgAudio");
     if (audio.muted) {
         audio.muted = false;
-        audio.play();
+        audio.play().catch(() => {
+            // Gestione errore autoplay bloccato
+            console.log("Autoplay bloccato, l'utente deve cliccare il pulsante audio");
+        });
+        updateAudioIcon();
     }
 }, { once: true });
+
+// Toggle audio con bottone
+audioToggle.addEventListener("click", (e) => {
+    e.stopPropagation();
+    if (audio.paused) {
+        audio.play().catch(() => {
+            console.log("Impossibile riprodurre l'audio");
+        });
+    } else {
+        audio.pause();
+    }
+    updateAudioIcon();
+});
+
+// Aggiorna icona audio
+function updateAudioIcon() {
+    if (audio.paused || audio.muted) {
+        audioIcon.textContent = "🔇";
+        audioToggle.setAttribute("aria-label", "Attiva musica di sottofondo");
+    } else {
+        audioIcon.textContent = "🔊";
+        audioToggle.setAttribute("aria-label", "Disattiva musica di sottofondo");
+    }
+}
+
+// Ascolta eventi audio per aggiornare l'icona
+audio.addEventListener("play", updateAudioIcon);
+audio.addEventListener("pause", updateAudioIcon);
 
 // Stop musica quando si lascia la pagina
 window.addEventListener("beforeunload", () => {
@@ -36,6 +72,7 @@ document.addEventListener("visibilitychange", () => {
 // --- RSVP (WhatsApp + memoria locale) ---
 const yesLink = document.getElementById("yesLink");
 const noLink = document.getElementById("noLink");
+const rsvpFeedback = document.getElementById("rsvpFeedback");
 
 const yesMsg = `Ciao ${CONFIG.recipientName}, certo che ci sarò! ❤️🥂`;
 const noMsg = `Ciao ${CONFIG.recipientName}, purtroppo non potrò esserci 😭`;
@@ -56,9 +93,23 @@ function disableRSVP() {
     });
 }
 
-// Se già risposto, disabilita
-if (localStorage.getItem("rsvpAnswer")) {
+// Funzione per mostrare feedback
+function showFeedback(message) {
+    rsvpFeedback.textContent = message;
+    rsvpFeedback.classList.add("show");
+    setTimeout(() => {
+        rsvpFeedback.classList.remove("show");
+    }, 5000);
+}
+
+// Se già risposto, disabilita e mostra messaggio
+const savedAnswer = localStorage.getItem("rsvpAnswer");
+if (savedAnswer) {
     disableRSVP();
+    const message = savedAnswer === "yes"
+        ? "Grazie per aver confermato! ❤️"
+        : "Grazie per averci avvisato";
+    showFeedback(message);
 }
 
 // Memorizza risposta
@@ -66,6 +117,7 @@ yesLink.addEventListener("click", () => {
     setTimeout(() => {
         localStorage.setItem("rsvpAnswer", "yes");
         disableRSVP();
+        showFeedback("Grazie! Non vediamo l'ora di vederti! ❤️🥂");
     }, 800);
 });
 
@@ -73,6 +125,7 @@ noLink.addEventListener("click", () => {
     setTimeout(() => {
         localStorage.setItem("rsvpAnswer", "no");
         disableRSVP();
+        showFeedback("Grazie per averci avvisato. Ci mancherai! 💙");
     }, 800);
 });
 
@@ -113,9 +166,22 @@ if (/android/i.test(userAgent)) {
 }
 
 // --- PORTE ---
-document.getElementById("seal").onclick = () => {
-    document.getElementById("cover").classList.add("open");
+const seal = document.getElementById("seal");
+const cover = document.getElementById("cover");
+
+function openDoors() {
+    cover.classList.add("open");
     setTimeout(() => {
-        document.getElementById("cover").style.display = "none";
+        cover.style.display = "none";
     }, 1500);
-};
+}
+
+seal.onclick = openDoors;
+
+// Supporto accessibilità tastiera
+seal.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        openDoors();
+    }
+});

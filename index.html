@@ -5,12 +5,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Battesimo di Giulia – 11 ottobre 2025</title>
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Siete invitati al Battesimo di Giulia l'11 ottobre 2025. Festeggeremo insieme alla Chiesa di Costantinopoli e al ristorante Il Bagatto Club.">
+    <meta name="robots" content="noindex, nofollow">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Battesimo di Giulia – 11 ottobre 2025">
+    <meta property="og:description" content="Siete invitati al Battesimo di Giulia. Vi aspettiamo per festeggiare insieme!">
+    <meta property="og:image" content="timbro-corsivo.png">
+
+    <!-- Preload Critical Resources -->
+    <link rel="preload" as="image" href="timbro-corsivo.png">
+    <link rel="preload" as="image" href="bg-battesimo_transparent.png">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
         href="https://fonts.googleapis.com/css2?family=Allura&family=Playfair+Display:wght@500;600&family=Inter:wght@400;500&display=swap"
         rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Meow+Script&display=swap" rel="stylesheet">
+
+    <!-- Stylesheet -->
     <link rel="stylesheet" href="css/style.css">
 </head>
 
@@ -20,7 +38,7 @@
     <div id="cover">
         <div class="door left"></div>
         <div class="door right"></div>
-        <img id="seal" src="timbro-corsivo.png" alt="Timbro ceralacca">
+        <img id="seal" src="timbro-corsivo.png" alt="Timbro ceralacca - Clicca per aprire l'invito" role="button" tabindex="0">
     </div>
 
     <!-- Invito -->
@@ -41,12 +59,12 @@
         <div class="linea-sottile"></div>
         <div class="locations">
             <div class="location">
-                <a id="chiesa" class="icon" href="#" target="_blank"><img src="church.png" alt=""></a>
+                <a id="chiesa" class="icon" href="#" target="_blank" rel="noopener noreferrer" aria-label="Ottieni indicazioni per la chiesa"><img src="church.png" alt="Icona chiesa"></a>
                 <div class="label">Nuova Chiesa di Costantinopoli</div>
                 <div class="address">Via Dei Goti 32 – Angri</div>
             </div>
             <div class="location">
-                <a id="ristorante" class="icon" href="#" target="_blank"><img src="toast.png" alt=""></a>
+                <a id="ristorante" class="icon" href="#" target="_blank" rel="noopener noreferrer" aria-label="Ottieni indicazioni per il ristorante"><img src="toast.png" alt="Icona ristorante"></a>
                 <div class="label">Il Bagatto Club</div>
                 <div class="address">Via Termine Bianco 4 – Pagani</div>
             </div>
@@ -55,12 +73,13 @@
         <footer>
             <div class="ask">Ci sarai?</div>
             <div class="answers">
-                <a id="yesLink" href="#">Sì</a>
-                <a id="noLink" href="#">No</a>
+                <a id="yesLink" href="#" aria-label="Conferma presenza tramite WhatsApp">Sì</a>
+                <a id="noLink" href="#" aria-label="Declina invito tramite WhatsApp">No</a>
             </div>
+            <div id="rsvpFeedback" class="rsvp-feedback" role="status" aria-live="polite"></div>
 
             <div class="buttons">
-                <a id="addToCal" target="_blank">Aggiungi al calendario</a>
+                <a id="addToCal" target="_blank" rel="noopener noreferrer" aria-label="Aggiungi evento al calendario">Aggiungi al calendario</a>
             </div>
     </div>
     </footer>
@@ -68,7 +87,13 @@
     <!-- Audio autoplay -->
     <audio id="bgAudio" autoplay loop muted playsinline>
         <source src="river2.mp3" type="audio/mpeg">
+        Il tuo browser non supporta l'audio HTML5.
     </audio>
+
+    <!-- Controllo audio -->
+    <button id="audioToggle" class="audio-toggle" aria-label="Attiva/disattiva musica di sottofondo">
+        <span class="audio-icon">🔇</span>
+    </button>
 
     <script src="js/script.js"></script>
 </body>
