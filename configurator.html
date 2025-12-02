@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuratore Landing Page Eventi</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 16px;
+        }
+
+        .form-container {
+            padding: 40px 30px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 500;
+            color: #555;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-group small {
+            display: block;
+            color: #999;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .color-picker-group {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .color-option {
+            position: relative;
+        }
+
+        .color-option input[type="color"] {
+            height: 50px;
+            cursor: pointer;
+            border: 3px solid #e0e0e0;
+        }
+
+        .color-option input[type="color"]:hover {
+            border-color: #667eea;
+        }
+
+        .theme-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .theme-card {
+            padding: 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .theme-card:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+        }
+
+        .theme-card.selected {
+            border-color: #667eea;
+            background: #f5f7ff;
+        }
+
+        .theme-colors {
+            display: flex;
+            gap: 5px;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .theme-color {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 2px solid white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .generate-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .generate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        .generate-btn:active {
+            transform: translateY(0);
+        }
+
+        .generate-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            color: #667eea;
+        }
+
+        .loading.show {
+            display: block;
+        }
+
+        .success-message {
+            display: none;
+            background: #4caf50;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .form-row,
+            .color-picker-group {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .form-container {
+                padding: 30px 20px;
+            }
+        }
+
+        .help-icon {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            background: #667eea;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 18px;
+            font-size: 12px;
+            cursor: help;
+            margin-left: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎨 Configuratore Landing Page</h1>
+            <p>Personalizza la tua landing page per eventi in pochi click</p>
+        </div>
+
+        <div class="form-container">
+            <form id="configuratorForm">
+                <!-- SEZIONE 1: Informazioni Evento -->
+                <div class="section">
+                    <h2 class="section-title">📋 Informazioni Evento</h2>
+
+                    <div class="form-group">
+                        <label for="eventType">Tipo di Evento</label>
+                        <select id="eventType" required>
+                            <option value="Battesimo">Battesimo</option>
+                            <option value="Matrimonio">Matrimonio</option>
+                            <option value="Compleanno">Compleanno</option>
+                            <option value="Baby Shower">Baby Shower</option>
+                            <option value="Laurea">Laurea</option>
+                            <option value="Altro">Altro</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="personName">Nome Persona/Festeggiato/a *</label>
+                        <input type="text" id="personName" placeholder="Es: Giulia" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="eventDate">Data Evento *</label>
+                            <input type="date" id="eventDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="eventTime">Orario *</label>
+                            <input type="time" id="eventTime" value="19:00" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="subtitle">Testo Invito</label>
+                        <input type="text" id="subtitle" placeholder="Es: È LIETA DI INVITARVI AL SUO BATTESIMO" value="È LIETA DI INVITARVI AL SUO BATTESIMO">
+                    </div>
+                </div>
+
+                <!-- SEZIONE 2: Luoghi -->
+                <div class="section">
+                    <h2 class="section-title">📍 Luoghi</h2>
+
+                    <div class="form-group">
+                        <label for="location1Name">Nome Luogo 1 (Cerimonia) *</label>
+                        <input type="text" id="location1Name" placeholder="Es: Chiesa di San Pietro" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="location1Address">Indirizzo Luogo 1 *</label>
+                        <input type="text" id="location1Address" placeholder="Es: Via Roma 1 - Milano" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="location1Lat">Latitudine <span class="help-icon" title="Cerca su Google Maps e copia le coordinate">?</span></label>
+                            <input type="text" id="location1Lat" placeholder="Es: 45.4642" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="location1Lng">Longitudine</label>
+                            <input type="text" id="location1Lng" placeholder="Es: 9.1900" required>
+                        </div>
+                    </div>
+
+                    <hr style="margin: 30px 0; border: none; border-top: 1px solid #e0e0e0;">
+
+                    <div class="form-group">
+                        <label for="location2Name">Nome Luogo 2 (Ricevimento) *</label>
+                        <input type="text" id="location2Name" placeholder="Es: Ristorante La Terrazza" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="location2Address">Indirizzo Luogo 2 *</label>
+                        <input type="text" id="location2Address" placeholder="Es: Piazza Duomo 5 - Milano" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="location2Lat">Latitudine</label>
+                            <input type="text" id="location2Lat" placeholder="Es: 45.4640" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="location2Lng">Longitudine</label>
+                            <input type="text" id="location2Lng" placeholder="Es: 9.1898" required>
+                        </div>
+                    </div>
+
+                    <small style="color: #667eea;">💡 Trova le coordinate: apri Google Maps, cerca il luogo, click destro sul pin → copia coordinate</small>
+                </div>
+
+                <!-- SEZIONE 3: Contatti WhatsApp -->
+                <div class="section">
+                    <h2 class="section-title">💬 Conferme WhatsApp</h2>
+
+                    <div class="form-group">
+                        <label for="recipientName">Nome Destinatario Messaggi *</label>
+                        <input type="text" id="recipientName" placeholder="Es: Maria" required>
+                        <small>Il nome della persona che riceverà le conferme su WhatsApp</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="whatsappNumber">Numero WhatsApp (con prefisso) *</label>
+                        <input type="tel" id="whatsappNumber" placeholder="Es: 393331234567" required>
+                        <small>Formato: 39 (Italia) + numero senza spazi. Es: 393331234567</small>
+                    </div>
+                </div>
+
+                <!-- SEZIONE 4: Personalizzazione Colori -->
+                <div class="section">
+                    <h2 class="section-title">🎨 Tema e Colori</h2>
+
+                    <label>Scegli un Tema Predefinito:</label>
+                    <div class="theme-selector">
+                        <div class="theme-card selected" data-theme="classic">
+                            <strong>Classic</strong>
+                            <div class="theme-colors">
+                                <div class="theme-color" style="background: #3d5a40;"></div>
+                                <div class="theme-color" style="background: rgb(252, 242, 233);"></div>
+                                <div class="theme-color" style="background: rgb(128, 128, 0);"></div>
+                            </div>
+                        </div>
+                        <div class="theme-card" data-theme="romantic">
+                            <strong>Romantic</strong>
+                            <div class="theme-colors">
+                                <div class="theme-color" style="background: #d4567d;"></div>
+                                <div class="theme-color" style="background: #fff5f8;"></div>
+                                <div class="theme-color" style="background: #ff69b4;"></div>
+                            </div>
+                        </div>
+                        <div class="theme-card" data-theme="ocean">
+                            <strong>Ocean</strong>
+                            <div class="theme-colors">
+                                <div class="theme-color" style="background: #1e3a5f;"></div>
+                                <div class="theme-color" style="background: #e8f4f8;"></div>
+                                <div class="theme-color" style="background: #4a90e2;"></div>
+                            </div>
+                        </div>
+                        <div class="theme-card" data-theme="sunset">
+                            <strong>Sunset</strong>
+                            <div class="theme-colors">
+                                <div class="theme-color" style="background: #e67e22;"></div>
+                                <div class="theme-color" style="background: #fef5e7;"></div>
+                                <div class="theme-color" style="background: #f39c12;"></div>
+                            </div>
+                        </div>
+                        <div class="theme-card" data-theme="custom">
+                            <strong>Custom</strong>
+                            <div class="theme-colors">
+                                <div class="theme-color" style="background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="customColors" style="display: none; margin-top: 20px;">
+                        <label>Colori Personalizzati:</label>
+                        <div class="color-picker-group">
+                            <div class="color-option">
+                                <label for="primaryColor" style="font-size: 12px;">Primario</label>
+                                <input type="color" id="primaryColor" value="#3d5a40">
+                            </div>
+                            <div class="color-option">
+                                <label for="bgColor" style="font-size: 12px;">Sfondo</label>
+                                <input type="color" id="bgColor" value="#fcf2e9">
+                            </div>
+                            <div class="color-option">
+                                <label for="accentColor" style="font-size: 12px;">Accento</label>
+                                <input type="color" id="accentColor" value="#808000">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="loading" id="loading">
+                    <p>⏳ Generando la tua landing page...</p>
+                </div>
+
+                <div class="success-message" id="successMessage">
+                    ✅ Landing page generata con successo! Il download partirà automaticamente.
+                </div>
+
+                <button type="submit" class="generate-btn">
+                    📥 Genera e Scarica Landing Page
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="configurator.js"></script>
+</body>
+</html>
